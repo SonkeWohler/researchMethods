@@ -10,6 +10,6 @@ Copyright: University of Aberdeen, I guess
 Rights: probably reserved by the above, but as an educational institution (and this being part of course work) it is free to use for educational purposes. However, careful if you submit any of this, as without properly appropriating other people's work you are plagiarising!  
   
 launch from Launcher.main(String[]) with following arguments:  
-	to create Dataset and write into Cassandra: WRITE {IDEAL,NORMAL,WORST} <number of entries to create>  
+	to create Dataset and write into Cassandra: WRITE {IDEAL,NORMAL,WORST} (number of entries to create)  
 	to use existing Dataset and create readings: READ  
 
