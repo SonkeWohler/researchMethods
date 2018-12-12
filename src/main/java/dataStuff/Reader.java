@@ -18,6 +18,7 @@ public class Reader {
 
     this.text.createReadingFile();
     this.text.openKeyFile();
+    this.text.createWritingFile();
 
     this.run();
 
@@ -32,7 +33,7 @@ public class Reader {
     String line = "";
     String[] stringKeys = new String[2];
     int[] intKeys = new int[2];
-    double time = 0.0;
+    long time = 0;
     for (int i = 0; i < 1000000; i++) {
       // read the next key pair
       try {
@@ -49,14 +50,6 @@ public class Reader {
       }
       // split keys
       stringKeys = line.split(" ");
-      if (stringKeys.length != 2) {
-        System.err.println("read keys not of the correct length! aborting execution");
-        System.err.println("key contents:");
-        for (String key : stringKeys) {
-          System.err.println(String.format("--- %s", key));
-        }
-        System.exit(1);
-      }
       try {
         intKeys[0] = Integer.parseInt(stringKeys[0]);
         intKeys[1] = Integer.parseInt(stringKeys[1]);
@@ -68,6 +61,8 @@ public class Reader {
       }
       // read from DB and write time to file
       time = this.cassandra.getCustomer(intKeys[0], intKeys[1]);
+      line = String.format("%s %s", line, Long.toString(time));
+      this.text.writing(line);
       this.text.reading(Double.toString(time));
 
 

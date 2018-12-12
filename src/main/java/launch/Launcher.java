@@ -2,6 +2,7 @@ package launch;
 
 import dataStuff.Creator;
 import dataStuff.Reader;
+import dataStuff.Transformer;
 
 public class Launcher {
 
@@ -21,7 +22,7 @@ public class Launcher {
         break;
       case "write":
         System.out.println(String.format(
-            "Initiating Program for DB set up for %s Case with %s entries", args[1], args[2]));
+            "Initiating Program for DB set up for %s Case with %s entries.\n", args[1], args[2]));
         try {
           Thread.sleep(500);
         } catch (InterruptedException e) {
@@ -30,9 +31,12 @@ public class Launcher {
         new Creator(args[1], args[2]);
         break;
       case "read":
-        System.out.println("Initiating Program for assessing DB reading times.");
+        System.out.println("Initiating Program for assessing DB reading times.\n");
         new Reader();
         break;
+      case "transform":
+        System.out.println("transforming DataStuff");
+        new Transformer();
     }
 
     System.out.println("end of main");

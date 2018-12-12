@@ -15,7 +15,7 @@ public class Creator {
   private Random rand; // provides random functionalities including gaussians
   private int keyType = 0;
   private int totalIterations = 0;
-  private int readsRemaining = 100;
+  private int readsRemaining = 10000;
 
   // Constructor and set up
   // ****************************
@@ -84,6 +84,7 @@ public class Creator {
 
   private void run(int iterations) {
     System.out.println("creating and writing Dataset");
+    long time = 0;
     int hashID = 0;
     int cID = 0;
     String name = "test";
@@ -92,13 +93,22 @@ public class Creator {
     for (int i = 0; i < iterations; i++) {
       hashID = this.makeHashID(i);
       cID = i;
-      if (this.readThisKey(i) == true) {
-        this.text.key(String.format("%s %s", Integer.toString(hashID), Integer.toString(cID)));
+
+      time = this.cassandra.newCustomer(hashID, cID, name, address); // could remember writing time
+
+      if (this.readThisKey(i)) {
+        this.text
+            .key(String.format("%s %s %s", Integer.toString(hashID), Integer.toString(cID), time));
       }
-      this.cassandra.newCustomer(hashID, cID, name, address); // could remember writing time
+
       if (i % 10 == 0) {
         this.reseed();
+        if (i % 1000 == 0) {
+          System.out.println(String.format("- now at key number %s, %s iterations remaining", i,
+              this.totalIterations - i));
+        }
       }
+
     }
   }
 

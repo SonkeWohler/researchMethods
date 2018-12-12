@@ -6,6 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -13,14 +14,17 @@ public class Text {
 
   private Path readingFile = Paths.get(Text.filePath, Text.readingFileName);
   private Path keyFile = Paths.get(Text.filePath, Text.keyFileName);
+  private Path writingFile = Paths.get(Text.filePath, Text.writingFileName);
   private Scanner keyScanner;
 
   public static final String filePath = "D:/uni/CS4040/executionFiles";
   public static final String readingFileName = "CS4040_readingFile.txt";
   public static final String keyFileName = "CS4040_keyFile.txt";
+  public static final String writingFileName = "CS4040_fullDetails.txt";
 
   private ArrayList<String> readingList = new ArrayList<String>();
   private ArrayList<String> keyList = new ArrayList<String>();
+  private ArrayList<String> writingList = new ArrayList<String>();
 
   private Charset encoding = StandardCharsets.UTF_8;
 
@@ -41,6 +45,21 @@ public class Text {
       Files.createFile(this.readingFile);
       System.out
           .println(String.format("readingFile is located at: %s", this.readingFile.toString()));
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void createWritingFile() {
+    try {
+      Files.deleteIfExists(this.writingFile);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    try {
+      Files.createFile(this.writingFile);
+      System.out.println(
+          String.format("full detail file is located at: %s", this.writingFile.toString()));
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -85,7 +104,7 @@ public class Text {
 
   private void reading() {
     try {
-      Files.write(this.readingFile, this.readingList, this.encoding);
+      Files.write(this.readingFile, this.readingList, this.encoding, StandardOpenOption.APPEND);
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -101,11 +120,27 @@ public class Text {
 
   private void key() {
     try {
-      Files.write(this.keyFile, this.keyList, this.encoding);
+      Files.write(this.keyFile, this.keyList, this.encoding, StandardOpenOption.APPEND);
     } catch (Exception e) {
       e.printStackTrace();
     }
     this.keyList.clear();
+  }
+
+  public void writing(String line) {
+    this.writingList.add(line);
+    if (this.writingList.size() > 10) {
+      this.writing();
+    }
+  }
+
+  private void writing() {
+    try {
+      Files.write(this.writingFile, this.writingList, this.encoding, StandardOpenOption.APPEND);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    this.writingList.clear();
   }
 
   // reading from file
@@ -127,6 +162,7 @@ public class Text {
   public void terminate() {
     this.reading();
     this.key();
+    this.writing();
     try {
       this.keyScanner.close();
     } catch (NullPointerException e) {

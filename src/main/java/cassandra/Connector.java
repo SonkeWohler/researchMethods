@@ -77,25 +77,25 @@ public class Connector {
   // Writing to DB
   // *********************************************************
 
-  public double newCustomer(int hashID, int cID, String name, String address) {
-    double time = 0.0;
+  public long newCustomer(int hashID, int cID, String name, String address) {
+    long time = 0;
     BoundStatement statement = this.write.bind(hashID, cID, name, address);
-    // TODO System time
+    time = System.currentTimeMillis();
     this.session.execute(statement);
-    // TODO System time
+    time = System.currentTimeMillis() - time;
     return time;
   }
 
   // Reading from DB
   // ***********************************************************************************
 
-  public double getCustomer(int hashID, int cID) {
-    double time = 0.0;
+  public long getCustomer(int hashID, int cID) {
+    long time = 0;
     String query =
         String.format("SELECT name FROM cs4040.customer WHERE hashID=%s AND cID=%s;", hashID, cID);
-    // TODO System time
+    time = System.currentTimeMillis();
     this.session.execute(query);
-    // TODO System time
+    time = System.currentTimeMillis() - time;
     return time;
   }
 

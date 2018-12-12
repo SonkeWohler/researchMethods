@@ -3,6 +3,7 @@ Simple uni project for "Research Methods" (CS4040, University of Aberdeen, 2018)
 I used this to create some randomised Datasets and evaluate reading times on some different partitioning schemas. 
 
 simply clone into your eclipse workspace and import from eclipse as maven project (will not work without pom.xml)
+Remember to adjust the file paths located in text.Text.java! That's where the text files go.
 
 Java Compiler: 1.8  
 requires Apache-Cassandra tested on 3.11.3 (use JDK/JRE 1.8 or lower to start this up first): http://cassandra.apache.org/  
